@@ -1,0 +1,24 @@
+# --- Secrets ---
+# Never commit environment files; copy .env.example to .env locally.
+.env
+*.env
+!.env.example
+
+# --- Dependencies ---
+node_modules/
+
+# --- Build output ---
+frontend/build/
+dist/
+
+# --- Runtime uploads (user content) ---
+backend/public/uploads/
+
+# --- Logs & OS ---
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# --- Temporary local dev fix scripts (not part of the app) ---
+backend/*.ps1
