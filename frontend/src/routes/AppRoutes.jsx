@@ -15,7 +15,7 @@ import AccountPage from '../pages/AccountPage';
 import AdminDashboard from '../pages/AdminDashboard';
 
 function AppRoutes() {
-  const { user } = useAuth();
+  useAuth();
 
   return (
     <Routes>

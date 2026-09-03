@@ -1,7 +1,6 @@
 "use client";
 import { useState, useCallback } from 'react';
 import apiClient from '../services/api';
-import { toast } from 'react-toastify';
 
 function useProperties() {
   const [properties, setProperties] = useState([]);

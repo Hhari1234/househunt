@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { XIcon, CheckIcon, TrashIcon } from './icons';
+import { CheckIcon, TrashIcon } from './icons';
 
 function Modal({ open, onClose, title, description, icon = 'danger', confirmLabel = 'Confirm', cancelLabel = 'Cancel', onConfirm, busy = false, children }) {
   const dialogRef = useRef(null);

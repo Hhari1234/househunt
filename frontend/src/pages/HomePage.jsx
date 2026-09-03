@@ -10,7 +10,7 @@ import PropertyCard from '../components/PropertyCard';
 import Reveal from '../components/Reveal';
 import { PropertyGridSkeleton } from '../components/Skeletons';
 import EmptyState from '../components/EmptyState';
-import { SearchIcon, CompassIcon, KeyIcon, CalendarIcon, ArrowRightIcon, ShieldIcon, SparkleIcon } from '../components/icons';
+import { SearchIcon, CompassIcon, KeyIcon, CalendarIcon, ArrowRightIcon, ShieldIcon } from '../components/icons';
 
 const TYPE_TILES = [
   { type: 'House', img: 'assets/beach_cat.jpg' },
@@ -24,7 +24,7 @@ const TYPE_TILES = [
 function HomePage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { properties, loading, error, fetchProperties } = useProperties();
+  const { fetchProperties, error } = useProperties();
   const { isPropertyFavorited, toggleFavorite, isFavoritePending } = useFavorites();
 
   const [keyword, setKeyword] = useState('');

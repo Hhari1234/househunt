@@ -41,7 +41,7 @@ function PropertyGallery({ images, title }) {
         <div className="gallery-main" onClick={() => openFs(active)} role="button" tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && openFs(active)}
           aria-label="Open photo gallery">
-          <img src={main} alt={`${title} — main photo`} />
+          <img src={main} alt={`${title} — main view`} />
           <button className="gallery-zoom" onClick={(e) => { e.stopPropagation(); openFs(active); }} aria-label="View fullscreen">
             <ZoomInIcon size={20} />
           </button>
@@ -50,11 +50,11 @@ function PropertyGallery({ images, title }) {
         {list.length > 1 && (
           <>
             <div className="gallery-side" onClick={() => { setActive(1); openFs(1); }}>
-              <img src={list[1]} alt={`${title} — photo 2`} />
+              <img src={list[1]} alt={`${title} — view 2`} />
             </div>
             {list.length > 2 && (
               <div className="gallery-side gallery-side--2" onClick={() => { setActive(2); openFs(2); }}>
-                <img src={list[2]} alt={`${title} — photo 3`} />
+                <img src={list[2]} alt={`${title} — view 3`} />
                 {list.length > 3 && (
                   <span className="gallery-more">+{list.length - 3} photos</span>
                 )}
@@ -92,7 +92,7 @@ function PropertyGallery({ images, title }) {
               </button>
             </>
           )}
-          <img key={fsIndex} src={list[fsIndex]} alt={`${title} — photo ${fsIndex + 1}`} />
+          <img key={fsIndex} src={list[fsIndex]} alt={`${title} — view ${fsIndex + 1}`} />
         </div>
         {list.length > 1 && (
           <div className="fs-thumbs">
