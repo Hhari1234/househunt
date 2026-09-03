@@ -46,15 +46,21 @@ const databaseConfig = {
       const uri = databaseConfig.getMongoUri();
       const options = databaseConfig.getConnectionOptions();
       
-      console.log('Attempting to connect to MongoDB...');
-      
+      // Safe diagnostics (do NOT print secrets)
+      const hasEnvUri = !!process.env.MONGODB_URI;
+      const uriScheme = hasEnvUri && process.env.MONGODB_URI.startsWith('mongodb+srv://')
+        ? 'mongodb+srv'
+        : (hasEnvUri && process.env.MONGODB_URI.startsWith('mongodb://') ? 'mongodb' : 'unknown');
+      console.log('MongoDB connection attempt started', { hasEnvUri, uriScheme });
+
       await mongoose.connect(uri, options);
-      
-      console.log('Connected to MongoDB successfully');
+
+      console.log('MongoDB connection succeeded');
       
       // Handle connection events for better monitoring
       mongoose.connection.on('error', (error) => {
-        console.error('MongoDB connection error:', error);
+        // Log sanitized event — do not leak connection strings or credentials
+        console.error('MongoDB connection error:', { name: error.name, message: error.message });
       });
       
       mongoose.connection.on('disconnected', () => {
@@ -63,7 +69,15 @@ const databaseConfig = {
       
       return true;
     } catch (error) {
-      console.error('Failed to connect to MongoDB:', error.message);
+      // Sanitize error classification
+      const msg = String(error && error.message ? error.message : error);
+      let reason = 'unknown';
+      if (/Authentication failed|auth/i.test(msg)) reason = 'authentication';
+      else if (/ENOTFOUND|getaddrinfo/i.test(msg)) reason = 'dns';
+      else if (/timeout|timed out|server selection/i.test(msg)) reason = 'timeout/network';
+      else if (/ECONNREFUSED|connection refused/i.test(msg)) reason = 'connection_refused';
+
+      console.error('Failed to connect to MongoDB (sanitized):', { reason, message: msg });
       throw error;
     }
   },
