@@ -1,6 +1,6 @@
 const API_BASE_URL = (() => {
   // 1. Explicit production override (set REACT_APP_API_URL at build time,
-  //    e.g. https://househunt-api.vercel.app/api/v1 on Vercel).
+  //    e.g. https://househunt-api.onrender.com/api/v1 on Render).
   const configured = typeof process !== 'undefined' ? process.env.REACT_APP_API_URL : '';
   if (configured) return configured.replace(/\/+$/, '');
 

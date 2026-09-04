@@ -1,5 +1,6 @@
-# Optional Render service configuration. Do NOT include secrets here.
-# Set environment variables in the Render dashboard after creating services.
+# Render service configuration for HouseHunt
+# Environment variables (secrets) must be set in the Render dashboard.
+# See DEPLOYMENT.md for the full step-by-step guide.
 
 services:
   - type: web
@@ -7,14 +8,38 @@ services:
     env: node
     plan: free
     root: backend
-    buildCommand: "npm install"
-    startCommand: "npm start"
+    buildCommand: npm install
+    startCommand: npm start
     healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
 
   - type: static
     name: househunt-frontend
     env: static
     plan: free
     root: frontend
-    buildCommand: "npm install && npm run build"
+    buildCommand: npm install && npm run build
     publishPath: build
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /static/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /manifest.json
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /favicon.svg
+        name: Cache-Control
+        value: public, max-age=86400
