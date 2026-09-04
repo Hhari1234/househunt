@@ -12,7 +12,7 @@ const getApiBaseUrlForHost = (hostname = '') => {
 const API_BASE_URL = (() => {
   // 1. Explicit production override (set REACT_APP_API_URL at build time,
   //    e.g. https://househunt-api.onrender.com/api/v1 on Render).
-  const configured = typeof process !== 'undefined' ? process.env.REACT_APP_API_URL : '';
+  const configured = process.env.REACT_APP_API_URL;
   if (configured) return configured.replace(/\/+$/, '');
 
   // 2. Local development → the locally running API.
