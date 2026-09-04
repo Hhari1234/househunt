@@ -4,17 +4,9 @@ const getApiBaseUrlForHost = (hostname = '') => {
   if (!host) return '/api/v1';
   if (host.includes('localhost')) return 'http://localhost:3001/api/v1';
 
-  if (host.includes('onrender.com')) {
-    const renderBackendMap = {
-      'househunt-igh9.onrender.com': 'https://househunt-api-9zaf.onrender.com/api/v1',
-    };
-
-    if (renderBackendMap[host]) {
-      return renderBackendMap[host];
-    }
-  }
-
-  return `${window.location.origin}/api/v1`;
+  // No hardcoded host-specific fallbacks.
+  // Production must set REACT_APP_API_URL; local dev uses localhost above.
+  return '/api/v1';
 };
 
 const API_BASE_URL = (() => {
