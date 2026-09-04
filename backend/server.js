@@ -127,7 +127,7 @@ async function initializeApp() {
 // Start server only when run directly (Vercel imports the app instead)
 if (require.main === module) {
   initializeApp().then(() => {
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`HouseHunt API server running on port ${PORT}`);
     });
   }).catch(error => {

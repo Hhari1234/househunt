@@ -1,0 +1,20 @@
+# Optional Render service configuration. Do NOT include secrets here.
+# Set environment variables in the Render dashboard after creating services.
+
+services:
+  - type: web
+    name: househunt-backend
+    env: node
+    plan: free
+    root: backend
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    healthCheckPath: /health
+
+  - type: static
+    name: househunt-frontend
+    env: static
+    plan: free
+    root: frontend
+    buildCommand: "npm install && npm run build"
+    publishPath: build

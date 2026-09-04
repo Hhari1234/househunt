@@ -7,8 +7,9 @@ REST API. Browse published listings, search and filter, save favorites, request
 bookings, manage your account, and administer the marketplace — all backed by real,
 persistent data.
 
-Live deployments run frontend and API on Vercel, MongoDB on Atlas, with listing
-photos stored in the database via GridFS — see [`DEPLOYMENT.md`](DEPLOYMENT.md).
+Live deployments run the frontend as a Render Static Site and the API as a
+Render Web Service, MongoDB on Atlas, with listing photos stored in the
+database via GridFS — see [`DEPLOYMENT.md`](DEPLOYMENT.md).
 
 > Built by **Hariraj K**
 
@@ -64,8 +65,9 @@ househunt-main/
 
 ## Live Demo
 
-The application is architected for permanent cloud hosting (frontend + backend on
-Vercel, database on MongoDB Atlas, images persisted in Atlas via GridFS). Once
+The application is architected for permanent cloud hosting (frontend + backend
+on Render, database on MongoDB Atlas, images persisted in Atlas via GridFS).
+Once
 deployed, the public URL goes here — see `DEPLOYMENT.md` for the exact
 step-by-step hosting guide.
 
@@ -154,11 +156,11 @@ npm run build
 Production hosting is documented in detail in [`DEPLOYMENT.md`](DEPLOYMENT.md).
 In short:
 
-- **Frontend** — Vercel static project (Create React App, `frontend/`), with SPA
-  fallback so deep links work; `REACT_APP_API_URL` is baked in at build time.
-- **Backend** — Vercel project rooted at `backend/`; Vercel runs the exported
-  Express app as a single function (zero-config). Requires `MONGODB_URI`,
-  `JWT_SECRET`, `FRONTEND_URL`, and `STORAGE_DRIVER=gridfs`.
+- **Frontend** — Render Static Site (Create React App, `frontend/`). Build via
+  `npm install && npm run build`; set `REACT_APP_API_URL` in the Render dashboard.
+- **Backend** — Render Web Service rooted at `backend/`; use `npm start` as the
+  start command. Requires `MONGODB_URI`, `JWT_SECRET`, `FRONTEND_URL`, and
+  `STORAGE_DRIVER=gridfs`.
 - **Database & images** — MongoDB Atlas M0; property photos are stored in
   MongoDB GridFS (`STORAGE_DRIVER=gridfs`) so uploads survive redeploys.
   Locally the default `STORAGE_DRIVER=disk` is unchanged.

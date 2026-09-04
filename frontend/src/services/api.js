@@ -12,19 +12,24 @@ const API_BASE_URL = (() => {
     }
 
     // 3. When built for production but REACT_APP_API_URL was not provided
-    //    (e.g. a missing Vercel env during build), prefer the canonical
-    //    backend host so the deployed frontend targets the API instead of
-    //    its own static origin. This keeps local dev behavior unchanged.
+    //    we cannot assume a specific hosting provider. Log a clear warning
+    //    and fall back to same-origin `/api/v1` as a last resort. In
+    //    production you must set `REACT_APP_API_URL` to your backend API
+    //    (e.g. https://<backend-render-url>/api/v1) at build time.
     if (process.env.NODE_ENV === 'production') {
-      return 'https://househunt-api.vercel.app/api/v1';
+      console.error(
+        'REACT_APP_API_URL is not set. In production set REACT_APP_API_URL to your backend API base (e.g. https://<backend-render-url>/api/v1). Falling back to same-origin /api/v1.'
+      );
+      return `${origin}/api/v1`;
     }
 
     // Default fallback (non-local development): use same-origin API.
     return `${origin}/api/v1`;
   }
 
-  // Server-side/default fallback: assume production API host.
-  return 'https://househunt-api.vercel.app/api/v1';
+  // Server-side/default fallback: warn and fall back to same-origin.
+  console.error('REACT_APP_API_URL not provided; defaulting to /api/v1. Set REACT_APP_API_URL during build.');
+  return '/api/v1';
 })();
 
 export { API_BASE_URL };
