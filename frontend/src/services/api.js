@@ -1,3 +1,22 @@
+const getApiBaseUrlForHost = (hostname = '') => {
+  const host = String(hostname || '').toLowerCase();
+
+  if (!host) return '/api/v1';
+  if (host.includes('localhost')) return 'http://localhost:3001/api/v1';
+
+  if (host.includes('onrender.com')) {
+    const renderBackendMap = {
+      'househunt-igh9.onrender.com': 'https://househunt-api-9zaf.onrender.com/api/v1',
+    };
+
+    if (renderBackendMap[host]) {
+      return renderBackendMap[host];
+    }
+  }
+
+  return `${window.location.origin}/api/v1`;
+};
+
 const API_BASE_URL = (() => {
   // 1. Explicit production override (set REACT_APP_API_URL at build time,
   //    e.g. https://househunt-api.onrender.com/api/v1 on Render).
@@ -6,25 +25,16 @@ const API_BASE_URL = (() => {
 
   // 2. Local development → the locally running API.
   if (typeof window !== 'undefined') {
-    const origin = window.location.origin;
-    if (origin.includes('localhost')) {
-      return 'http://localhost:3001/api/v1';
-    }
+    const host = window.location.hostname;
+    const apiBaseUrl = getApiBaseUrlForHost(host);
 
-    // 3. When built for production but REACT_APP_API_URL was not provided
-    //    we cannot assume a specific hosting provider. Log a clear warning
-    //    and fall back to same-origin `/api/v1` as a last resort. In
-    //    production you must set `REACT_APP_API_URL` to your backend API
-    //    (e.g. https://<backend-render-url>/api/v1) at build time.
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' && apiBaseUrl === `${window.location.origin}/api/v1`) {
       console.error(
         'REACT_APP_API_URL is not set. In production set REACT_APP_API_URL to your backend API base (e.g. https://<backend-render-url>/api/v1). Falling back to same-origin /api/v1.'
       );
-      return `${origin}/api/v1`;
     }
 
-    // Default fallback (non-local development): use same-origin API.
-    return `${origin}/api/v1`;
+    return apiBaseUrl;
   }
 
   // Server-side/default fallback: warn and fall back to same-origin.
@@ -32,7 +42,7 @@ const API_BASE_URL = (() => {
   return '/api/v1';
 })();
 
-export { API_BASE_URL };
+export { API_BASE_URL, getApiBaseUrlForHost };
 
 const API_ORIGIN = API_BASE_URL.replace(/\/api\/v1\/?$/, '');
 
